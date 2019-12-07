@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>51单片机中断系统 | oPlusman</title><meta name="description" content="51单片机中断系统"><meta name="keywords" content="C51单片机"><meta name="author" content="oPlusman"><meta name="copyright" content="oPlusman"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="51单片机中断系统"><meta name="twitter:description" content="51单片机中断系统"><meta name="twitter:image" content="https://i.loli.net/2019/11/30/w3pdhR1zacj5OqU.jpg"><meta property="og:type" content="article"><meta property="og:title" content="51单片机中断系统"><meta property="og:url" content="http://oplusman.github.io/year/12/07/51%E5%8D%95%E7%89%87%E6%9C%BA%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/"><meta property="og:site_name" content="oPlusman"><meta property="og:description" content="51单片机中断系统"><meta property="og:image" content="https://i.loli.net/2019/11/30/w3pdhR1zacj5OqU.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="canonical" href="http://oplusman.github.io/year/12/07/51%E5%8D%95%E7%89%87%E6%9C%BA%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/"><link rel="next" title="51单片机IO扩展（并转串）--74HC165" href="/http:/oplusman.github.io/year/11/30/51%E5%8D%95%E7%89%87%E6%9C%BAIO%E6%89%A9%E5%B1%95%EF%BC%88%E5%B9%B6%E8%BD%AC%E4%B8%B2%EF%BC%89-74HC165/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://oplusman.github.io/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'true',
+  Snackbar: undefined
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">oPlusman</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li></ul></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="https://i.loli.net/2019/11/30/OC8Qy4uvF5xDwzt.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">6</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">5</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">3</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li></ul></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#C51中断系统"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">C51中断系统</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#一，中断的概念："><span class="toc_mobile_items-number">1.0.1.</span> <span class="toc_mobile_items-text">一，中断的概念：</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#二，中断能解决的问题"><span class="toc_mobile_items-number">1.0.2.</span> <span class="toc_mobile_items-text">二，中断能解决的问题</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#三，中断系统结构"><span class="toc_mobile_items-number">1.0.3.</span> <span class="toc_mobile_items-text">三，中断系统结构</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#四，中断源"><span class="toc_mobile_items-number">1.0.4.</span> <span class="toc_mobile_items-text">四，中断源</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#五，中断控制寄存器"><span class="toc_mobile_items-number">1.0.5.</span> <span class="toc_mobile_items-text">五，中断控制寄存器</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-6"><a class="toc_mobile_items-link" href="#1-TCON中的中断标志位"><span class="toc_mobile_items-number">1.0.5.1.</span> <span class="toc_mobile_items-text">1.TCON中的中断标志位</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-6"><a class="toc_mobile_items-link" href="#2-串行口控制寄存器SCON；"><span class="toc_mobile_items-number">1.0.5.2.</span> <span class="toc_mobile_items-text">2.串行口控制寄存器SCON；</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-6"><a class="toc_mobile_items-link" href="#3-中断允许控制IE"><span class="toc_mobile_items-number">1.0.5.3.</span> <span class="toc_mobile_items-text">3.中断允许控制IE</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-6"><a class="toc_mobile_items-link" href="#4-中断优先级控制寄存器IP"><span class="toc_mobile_items-number">1.0.5.4.</span> <span class="toc_mobile_items-text">4.中断优先级控制寄存器IP</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#C51外部中断"><span class="toc_mobile_items-number">1.1.</span> <span class="toc_mobile_items-text">C51外部中断</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#中断响应条件"><span class="toc_mobile_items-number">1.1.1.</span> <span class="toc_mobile_items-text">中断响应条件</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#1-外部中断初始化"><span class="toc_mobile_items-number">1.1.2.</span> <span class="toc_mobile_items-text">1.外部中断初始化</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#2-外部中断函数"><span class="toc_mobile_items-number">1.1.3.</span> <span class="toc_mobile_items-text">2.外部中断函数</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#实例"><span class="toc_mobile_items-number">1.1.4.</span> <span class="toc_mobile_items-text">实例:</span></a></li></ol></li></ol></li></ol></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#C51中断系统"><span class="toc-number">1.</span> <span class="toc-text">C51中断系统</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#一，中断的概念："><span class="toc-number">1.0.1.</span> <span class="toc-text">一，中断的概念：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#二，中断能解决的问题"><span class="toc-number">1.0.2.</span> <span class="toc-text">二，中断能解决的问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#三，中断系统结构"><span class="toc-number">1.0.3.</span> <span class="toc-text">三，中断系统结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#四，中断源"><span class="toc-number">1.0.4.</span> <span class="toc-text">四，中断源</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#五，中断控制寄存器"><span class="toc-number">1.0.5.</span> <span class="toc-text">五，中断控制寄存器</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-TCON中的中断标志位"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">1.TCON中的中断标志位</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-串行口控制寄存器SCON；"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">2.串行口控制寄存器SCON；</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-中断允许控制IE"><span class="toc-number">1.0.5.3.</span> <span class="toc-text">3.中断允许控制IE</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-中断优先级控制寄存器IP"><span class="toc-number">1.0.5.4.</span> <span class="toc-text">4.中断优先级控制寄存器IP</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C51外部中断"><span class="toc-number">1.1.</span> <span class="toc-text">C51外部中断</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#中断响应条件"><span class="toc-number">1.1.1.</span> <span class="toc-text">中断响应条件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-外部中断初始化"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.外部中断初始化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-外部中断函数"><span class="toc-number">1.1.3.</span> <span class="toc-text">2.外部中断函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#实例"><span class="toc-number">1.1.4.</span> <span class="toc-text">实例:</span></a></li></ol></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://i.loli.net/2019/11/30/w3pdhR1zacj5OqU.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">51单片机中断系统</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-12-07<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-12-07</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/C51%E5%8D%95%E7%89%87%E6%9C%BA/">C51单片机</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h3 id="C51中断系统"><a href="#C51中断系统" class="headerlink" title="C51中断系统"></a>C51中断系统</h3><h5 id="一，中断的概念："><a href="#一，中断的概念：" class="headerlink" title="一，中断的概念："></a>一，中断的概念：</h5><p>​    中断是指CPU在处理某一事件A时，发生了另一事件B请求CPU立刻去处理（中断发生）；CPU暂时停止当前的工作（中断响应），转而去处理事件B（中断服务），待CPU处理事件B完成后，再回到原来事件A被中断的地方继续处理事件A（中断返回）。 </p>
+<p>中断过程：</p>
+<p><img alt="1575676077160" data-src="t1.png" class="lazyload"></p>
+<p>​    引起CPU中断的根源，称为中断源。中断源向CPU提出的中断请求。CPU暂时中断原来的事务A，转去处理事件B。对事件B处理完毕后，再回到原来被中断的地方（即断点），称为中断返回。实现上述中断功能的部件称为中断系统。</p>
+<p><img alt="中断过程" data-src="t2.png" class="lazyload"></p>
+<h5 id="二，中断能解决的问题"><a href="#二，中断能解决的问题" class="headerlink" title="二，中断能解决的问题"></a>二，中断能解决的问题</h5><p>​    分时操作：CPU可以分时为多个I/O设备服务，提高了计算机的利用率；</p>
+<p>​    实时响应：CPU能够及时处理应用系统的随机事件，系统的实时性大大增强；</p>
+<p>​    可靠性高：CPU具有处理设备故障及掉电等突发性事件能力，从而使系统可靠性提高。 </p>
+<h5 id="三，中断系统结构"><a href="#三，中断系统结构" class="headerlink" title="三，中断系统结构"></a>三，中断系统结构</h5><pre><code>89C51/52的中断系统有5个中断源 ，2个优先级，可实现二级中断嵌套 。 </code></pre><p><img alt="中断系统结构" data-src="t3.png" class="lazyload"></p>
+<p>中断标志：</p>
+<p>1、（P3.2）可由IT0(TCON.0)选择其为低电平有效还是下降沿有效。当CPU检测到P3.2引脚上出现有效的中断信号时，中断标志IE0(TCON.1)置1，向CPU申请中断。 </p>
+<p>2、(P3.3）可由IT1(TCON.2)选择其为低电平有效还是下降沿有效。当CPU检测到P3.3引脚上出现有效的中断信号时，中断标志IE1(TCON.3)置1,向CPU申请中断。 </p>
+<p>3、TF0（TCON.5），片内定时/计数器T0溢出中断请求标志。当定时/计数器T0发生溢出时，置位TF0，并向CPU申请中断。 </p>
+<p>4、TF1（TCON.7），片内定时/计数器T1溢出中断请求标志。当定时/计数器T1发生溢出时，置位TF1，并向CPU申请中断。 </p>
+<p>5、RI（SCON.0）或TI（SCON.1），串行口中断请求标志。当串行口接收完一帧串行数据时置位RI或当串行口发送完一帧串行数据时置位TI，向CPU申请中断。  </p>
+<p>中断优先级：</p>
+<p>​    在该寄存器中，优先级分为1 0两级，对应的位置为1则为高优先级，位置为0则为低优先级。执行时先将高优            先级的中断执行完后才会执行低优先级（同样高优先级情况下，按默认优先级排）。</p>
+<ul>
+<li>PS：串行口中断优先级控制位</li>
+<li>PT1：定时器1优先级控制位</li>
+<li>PX1：外部中断1优先级控制位</li>
+<li>PT0：定时器0优先级控制位</li>
+<li>PX0：外部中断0优先级控制位</li>
+</ul>
+<h5 id="四，中断源"><a href="#四，中断源" class="headerlink" title="四，中断源"></a>四，中断源</h5><p>89c51有5个中断源：</p>
+<p>   INT0    ：外部中断0请求，低电平有效。</p>
+<p>   T0        : 定时/计数器0溢出中断请求。</p>
+<p>   INT1    : 外部中断1请求，低电平有效。</p>
+<p>   T1        ：定时/计数器1溢出中断请求。</p>
+<p>   RI/TI    : 串口中断请求，当串口发送/接受完一帧数据时，便请求中断。</p>
+<p>其中 INT0/1是两个外部中断，T0/1，TXD/RXD是3个内部中断，<u>优先级由上到下依次递减。</u></p>
+<p><img alt="中断源" data-src="t4.png" class="lazyload"></p>
+<h5 id="五，中断控制寄存器"><a href="#五，中断控制寄存器" class="headerlink" title="五，中断控制寄存器"></a>五，中断控制寄存器</h5><p>89c51有以下4个特殊功能寄存器</p>
+<p>​    定时器控制寄存器TCON（用6位）；</p>
+<p>​    串行口控制寄存器SCON（用2位）； </p>
+<p>​    中断允许寄存器IE;</p>
+<p>​    中断优先级寄存器IP.</p>
+<h6 id="1-TCON中的中断标志位"><a href="#1-TCON中的中断标志位" class="headerlink" title="1.TCON中的中断标志位"></a>1.TCON中的中断标志位</h6><p><img alt="TCON" data-src="t5.png" class="lazyload"></p>
+<p>​    IT0（TCON.0），外部中断0触发方式控制位。</p>
+<p>​               当IT0=0时，为电平触发方式。</p>
+<p>​                当IT0=1时，为边沿触发方式（下降沿有效）。</p>
+<p>​    IE0（TCON.1），外部中断0中断请求标志位。</p>
+<p>​    IT1（TCON.2），外部中断1触发方式控制位。</p>
+<p>​    IE1（TCON.3），外部中断1中断请求标志位。</p>
+<p>​    TF0（TCON.5），定时/计数器T0溢出中断请求标志位。</p>
+<p>​    TF1（TCON.7），定时/计数器T1溢出中断请求标志位。      </p>
+<h6 id="2-串行口控制寄存器SCON；"><a href="#2-串行口控制寄存器SCON；" class="headerlink" title="2.串行口控制寄存器SCON；"></a>2.串行口控制寄存器SCON；</h6><p>SCON 是一个特殊功能寄存器，用以设定串行口的工作方式、接收/发送控制以及设置状态标志：</p>
+<p><img alt="SCON" data-src="t8.png" class="lazyload"></p>
+<p><strong>SM0</strong>和<strong>SM1</strong>为工作方式选择位，可选择四种工作方式： </p>
+<p><img alt="工作方式" data-src="t9.png" class="lazyload"></p>
+<p>​    <strong>SM2</strong>，多机通信控制位，主要用于方式2和方式3。当接收机的SM2=1时可以利用收到的RB8来控制是否激活RI（RB8＝0时不激活RI，收到的信息丢弃；RB8＝1时收到的数据进入SBUF，并激活RI，进而在中断服务中将数据从SBUF读走）。当SM2=0时，不论收到的RB8为0和1，均可以使收到的数据进入SBUF，并激活RI（即此时RB8不具有控制RI激活的功能）。通过控制SM2，可以实现多机通信。</p>
+<p>​    在方式0时，SM2必须是0。在方式1时，如果SM2=1，则只有接收到有效停止位时，RI才置1。</p>
+<pre><code>**REN**，允许串行接收位。由软件置REN=1，则启动串行口接收数据；若软件置REN=0，则禁止接收。</code></pre><p>​    <strong>TB8</strong>，在方式2或方式3中，是发送数据的第九位，可以用软件规定其作用。可以用作数据的奇偶校验位，或在多机通信中，作为地址帧/数据帧的标志位。</p>
+<p>   在方式0和方式1中，该位未用。</p>
+<pre><code>**RB8**，在方式2或方式3中，是接收到数据的第九位，作为奇偶校验位或地址帧/数据帧的标志位。在方式1时，若SM2=0，则RB8是接收到的停止位。</code></pre><h6 id="3-中断允许控制IE"><a href="#3-中断允许控制IE" class="headerlink" title="3.中断允许控制IE"></a>3.中断允许控制IE</h6><p><img alt="IE " data-src="t6.png" class="lazyload"></p>
+<pre><code>EX0(IE.0)，外部中断0允许位；</code></pre><p>​    ET0(IE.1)，定时/计数器T0中断允许位； </p>
+<p>​    EX1(IE.2)，外部中断0允许位；</p>
+<p>​    ET1(IE.3)，定时/计数器T1中断允许位；</p>
+<p>​    ES（IE.4)，串行口中断允许位；</p>
+<p>​    EA (IE.7)， CPU中断允许（总允许）位。</p>
+<h6 id="4-中断优先级控制寄存器IP"><a href="#4-中断优先级控制寄存器IP" class="headerlink" title="4.中断优先级控制寄存器IP"></a>4.中断优先级控制寄存器IP</h6><table>
+<thead>
+<tr>
+<th>位序</th>
+<th>D7</th>
+<th>D6</th>
+<th>D5</th>
+<th>D4</th>
+<th>D3</th>
+<th>D2</th>
+<th>D1</th>
+<th>D0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>位名字</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>PS</td>
+<td>PT1</td>
+<td>PX1</td>
+<td>PT0</td>
+<td>PX0</td>
+</tr>
+<tr>
+<td>位地址</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>BCH</td>
+<td>BBH</td>
+<td>BAH</td>
+<td>B9H</td>
+<td>B8H</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>串行口</td>
+<td>T1</td>
+<td>INT1</td>
+<td>T0</td>
+<td>INT0</td>
+</tr>
+</tbody></table>
+<p>​    在该寄存器中，优先级分为1 0两级，对应的位置为1则为高优先级，位置为0则为低优先级。执行时先将高优先级的中断执行完后才会执行低优先级（同样高优先级情况下，按默认优先级排）。</p>
+<ul>
+<li><p>PS：串行口中断优先级控制位</p>
+</li>
+<li><p>PT1：定时器1优先级控制位</p>
+</li>
+<li><p>PX1：外部中断1优先级控制位</p>
+</li>
+<li><p>PT0：定时器0优先级控制位</p>
+</li>
+<li><p>PX0：外部中断0优先级控制位</p>
+<p><strong>51单片机的中断优先级有三条原则</strong> :</p>
+</li>
+</ul>
+<p>一，CPU同时接收到几个中断时，首先响应优先级别最高的中断请求。</p>
+<p>二，正在进行的中断过程不能被新的同级或低优先级的中断请求所中断。</p>
+<p>三，正在进行的低优先级中断服务，能被高优先级中断请求所中断。</p>
+<p>为了实现上述后两条原则，中断系统内部设有两个用户不能寻址的优先级状态触发器。其中一个置1，表示正在响应高优先级的中断，它将阻断后来所有的中断请求；另一个置1，表示正在响应低优先级中断，它将阻断后来所有的低优先级中断请求。</p>
+<h4 id="C51外部中断"><a href="#C51外部中断" class="headerlink" title="C51外部中断"></a>C51外部中断</h4><h5 id="中断响应条件"><a href="#中断响应条件" class="headerlink" title="中断响应条件"></a>中断响应条件</h5><p> 中断源有中断请求；</p>
+<p> 此中断源的中断允许位为1；</p>
+<p> CPU开中断（即EA=1）。</p>
+<p>以上三条同时满足时，CPU才有可能响应中断。</p>
+<h5 id="1-外部中断初始化"><a href="#1-外部中断初始化" class="headerlink" title="1.外部中断初始化"></a>1.外部中断初始化</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">外部中断<span class="number">0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Int0Init</span><span class="params">()</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">	<span class="comment">//设置INT0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">	IT0=<span class="number">1</span>;<span class="comment">//跳变沿出发方式（下降沿）</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">	EX0=<span class="number">1</span>;<span class="comment">//打开INT0的中断允许。	</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">	EA=<span class="number">1</span>;<span class="comment">//打开总中断	</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">外部中断<span class="number">1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Int1Init</span><span class="params">()</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">	<span class="comment">//设置INT1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">	IT1=<span class="number">1</span>;<span class="comment">//跳变沿出发方式（下降沿）</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">	EX1=<span class="number">1</span>;<span class="comment">//打开INT1的中断允许。	</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">	EA=<span class="number">1</span>;<span class="comment">//打开总中断	</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+<h5 id="2-外部中断函数"><a href="#2-外部中断函数" class="headerlink" title="2.外部中断函数"></a>2.外部中断函数</h5><p><strong>中断标志</strong></p>
+<p>1、（P3.2）可由IT0(TCON.0)选择其为低电平有效还是下降沿有效。当CPU检测到P3.2引脚上出现有效的中断信号时，中断标志IE0(TCON.1)置1，向CPU申请中断。 </p>
+<p>2、(P3.3）可由IT1(TCON.2)选择其为低电平有效还是下降沿有效。当CPU检测到P3.3引脚上出现有效的中断信号时，中断标志IE1(TCON.3)置1,向CPU申请中断。 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment">//外部中断1 中断号位0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Int0</span><span class="params">()</span>	interrupt 0		<span class="comment">//外部中断0的中断函数</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">	<span class="built_in">delay</span>(<span class="number">1000</span>);	 <span class="comment">//延时消抖</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">	<span class="keyword">if</span>(k3==<span class="number">0</span>)<span class="comment">//k3定义的引脚为sbit k4=P3^2; 定义按键K3</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">	&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">		led=~led;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">	&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="comment">//外部中断1 中断号位2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Int1</span><span class="params">()</span>	interrupt 2		<span class="comment">//外部中断1的中断函数 </span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">	<span class="built_in">delay</span>(<span class="number">1000</span>);	 <span class="comment">//延时消抖</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">	<span class="keyword">if</span>(k4==<span class="number">0</span>)<span class="comment">//k4定义的引脚为sbit k4=P3^3; 定义按键K4</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">	&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">		led=~led;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">	&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例:"></a>实例:</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment">/**************************************************************************************</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="comment">*		              外部中断0实验												  *</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="comment">实现现象：下载程序后，按照光盘内操作视频接线，操作K3按键使LED1（D11）状态取反</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="comment">注意事项：无。																				  </span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="comment">***************************************************************************************/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"reg52.h"</span>			 <span class="comment">//此文件中定义了单片机的一些特殊功能寄存器</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> u16;	  <span class="comment">//对数据类型进行声明定义</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> u8;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">sbit k3=P3^<span class="number">2</span>;  <span class="comment">//定义按键K3</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">sbit led=P2^<span class="number">0</span>;	 <span class="comment">//定义P20口是led</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"><span class="comment">/*******************************************************************************</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函 数 名         : delay</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函数功能		   : 延时函数，i=1时，大约延时10us</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"><span class="comment">*******************************************************************************/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delay</span><span class="params">(u16 i)</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">	<span class="keyword">while</span>(i--);	</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line"><span class="comment">/*******************************************************************************</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函 数 名         : Int1Init()</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函数功能		   : 设置外部中断1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 输    入         : 无</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 输    出         : 无</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line"><span class="comment">*******************************************************************************/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Int0Init</span><span class="params">()</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">	<span class="comment">//设置INT0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">	IT0=<span class="number">1</span>;<span class="comment">//跳变沿出发方式（下降沿）</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">	EX0=<span class="number">1</span>;<span class="comment">//打开INT0的中断允许。	</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">	EA=<span class="number">1</span>;<span class="comment">//打开总中断	</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line"><span class="comment">/*******************************************************************************</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函 数 名       : main</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函数功能		 : 主函数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 输    入       : 无</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 输    出    	 : 无</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line"><span class="comment">*******************************************************************************/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;	</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">	Int0Init();  <span class="comment">//	设置外部中断0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>);		</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">50</span></pre></td><td class="code"><pre><span class="line"><span class="comment">/*******************************************************************************</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">51</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函 数 名         : Int0()	interrupt 0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">52</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 函数功能		   : 外部中断0的中断函数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">53</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 输    入         : 无</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">54</span></pre></td><td class="code"><pre><span class="line"><span class="comment">* 输    出         : 无</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">55</span></pre></td><td class="code"><pre><span class="line"><span class="comment">*******************************************************************************/</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">56</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">57</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Int0</span><span class="params">()</span>	interrupt 0		<span class="comment">//外部中断0的中断函数</span></span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">58</span></pre></td><td class="code"><pre><span class="line"><span class="function"></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">59</span></pre></td><td class="code"><pre><span class="line">	<span class="built_in">delay</span>(<span class="number">1000</span>);	 <span class="comment">//延时消抖</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">60</span></pre></td><td class="code"><pre><span class="line">	<span class="keyword">if</span>(k3==<span class="number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">61</span></pre></td><td class="code"><pre><span class="line">	&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">62</span></pre></td><td class="code"><pre><span class="line">		led=~led;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">63</span></pre></td><td class="code"><pre><span class="line">	&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">64</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+
+
+
+
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined" target="_blank" rel="noopener">oPlusman</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="/http:/oplusman.github.io/year/12/07/51%E5%8D%95%E7%89%87%E6%9C%BA%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/">http://oplusman.github.io/year/12/07/51%E5%8D%95%E7%89%87%E6%9C%BA%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://oPlusman.github.io">oPlusman</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C51%E5%8D%95%E7%89%87%E6%9C%BA/">C51单片机    </a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2019/11/30/w3pdhR1zacj5OqU.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lazyload post-qr-code__img" src="/img/alipay.jpg"><div class="post-qr-code__desc">支付寶</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="next-post pull-full"><a href="/year/11/30/51%E5%8D%95%E7%89%87%E6%9C%BAIO%E6%89%A9%E5%B1%95%EF%BC%88%E5%B9%B6%E8%BD%AC%E4%B8%B2%EF%BC%89-74HC165/"><img class="next_cover lazyload" data-src="https://i.loli.net/2019/11/30/w3pdhR1zacj5OqU.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>51单片机IO扩展（并转串）--74HC165</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/year/11/30/51单片机IO扩展（并转串）-74HC165/" title="51单片机IO扩展（并转串）--74HC165"><img class="relatedPosts_cover lazyload"data-src="https://i.loli.net/2019/11/30/w3pdhR1zacj5OqU.jpg"><div class="relatedPosts_title">51单片机IO扩展（并转串）--74HC165</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var notify = false == true ? true : false;
+var verify = false == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'h7SKXs4ABtKn1kPCVYQBtAx9-gzGzoHsz',
+  appKey:'9Uxd04rBivQlIVimfDAArccT',
+  placeholder:'Please leave your footprints',
+  avatar:'monsterid',
+  guest_info:guest_info,
+  pageSize:'10',
+  lang:'en',
+  recordIP: true
+});</script></div></div></div><footer id="footer" style="background-image: url(https://i.loli.net/2019/11/30/w3pdhR1zacj5OqU.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2019 By oPlusman</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="footer_custom_text">Hi,  welcome  to  my  <a  href="https://oPlusman.github.io/">blog</a>!</div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
